@@ -1,5 +1,16 @@
 
+h1{
+	letter-spacing: 200px;
+}
+
+
 
 .headerwrap{
 	height: 100%;
+}
+
+
+
+.learning.travel.drinking{
+	text-align: center;
 }
