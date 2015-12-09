@@ -8,12 +8,12 @@ h1.animation.slideDown{
 
 
 
-.headerwrap{
+#headerwrap{
 	height: 100%;
 }
 
 
 
-.learning.travel.drinking{
+.learning, .travel, .drinking{
 	text-align: center;
 }
