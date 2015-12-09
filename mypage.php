@@ -1,4 +1,11 @@
-    <!DOCTYPE html>
+
+<?php
+    var_dump($_POST['title']) ;
+?>
+
+
+
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -9,7 +16,7 @@
     <link rel="shortcut icon" href="assets/ico/favicon.png">
 
     <title>My page</title>
-
+ 
     <link href="assets/css/hover_pack.css" rel="stylesheet">
 
     <!-- Bootstrap core CSS -->
@@ -194,6 +201,9 @@
             </div>
         </div><!-- /row -->
 
+
+
+ 
         <div class="container">
             <form method="post" action="" class="text-center">
                 <div class="form-group form-inline">
