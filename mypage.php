@@ -1,7 +1,71 @@
-
 <?php
-    var_dump($_POST['title']) ;
+session_start();
+date_default_timezone_set('Asia/Manila');
+
+require('dbconnect.php');
+
+if (!empty($_POST)){
+//エラー項目の確認している。
+    if($_POST['title']==''){
+        $error['title'] ='blank';
+    }
+    if($_POST['date']==''){
+        $error['date'] ='blank';
+    }
+    if($_POST['time']==''){
+        $error['time'] ='blank';
+    }
+    if($_POST['place']==''){
+        $error['place'] ='blank';
+    }
+    if($_POST['remark']==''){
+        $error['remark'] ='blank';
+    }
+    
+    if (empty($error)) {
+        $_SESSION['join'] = $_POST;
+        header('Location:mypage.php');
+        exit();
+    }
+}
+
+
+
+    
+
+    if(!empty($_POST)) {
+    //登録処理をする
+    $sql = sprintf('INSERT INTO plans SET category_id=1, user_id=1, title="%s", day="%s",time="%s",place="%s", remark="%s" created=NOW()',
+    
+    mysqli_real_escape_string($db,$_POST['title']),
+
+
+
+
+
+    mysqli_real_escape_string($db,$_SESSION['join']['email']),
+    mysqli_real_escape_string($db,sha1($_SESSION['join']['password'])),
+    mysqli_real_escape_string($db,$_SESSION['join']['image']),
+    date('Y-m-d H:i:s')
+    );
+
+    mysqli_query($db,$sql)or die(mysqli_error($db));
+
+    
+    header('Location: mypage.php');
+    exit();
+
+}
+
+
+
+
 ?>
+
+
+
+
+
 
 
 
@@ -208,32 +272,51 @@
             <form method="post" action="" class="text-center">
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">Title:</label>
-                  <input type="text" name="title" id="title" placeholder="Title" class="form-control">
+                  <input type="text" name="title" id="title" placeholder="Title" class="form-control" value="<?php echo htmlspecialchars($_POST['name'], ENT_QUOTES,'UTF-8');?>"/>
+                  <?php if ($error['title'] == 'blank'):?>
+                  <p classs="error"> *タイトルを入力してください</p>
+                  <?php endif;?>
                 </div>
+                
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">Date:</label>
-                  <input type="text" name="date" id="date" placeholder="Date" class="form-control">
+                  <input type="text" name="date" id="date" placeholder="Date" class="form-control" value="<?php echo htmlspecialchars($_POST['email'],ENT_QUOTES,'UTF-8');?>"/>
+                  <?php if ($error['day'] == 'blank'):?>
+                  <p classs="error"> *日付を入力してください</p>
+                  <?php endif;?>
                 </div>
+                
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">When:</label>
-                  <input type="text" name="when" id="when" placeholder="When" class="form-control">
+                  <input type="text" name="when" id="when" placeholder="When" class="form-control" value="<?php echo htmlspecialchars($_POST['email'],ENT_QUOTES,'UTF-8');?>"/>
+                  <?php if ($error['when'] == 'blank'):?>
+                  <p classs="error"> *時を入力してください</p>
+                  <?php endif;?>
                 </div>
+                
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">Where:</label>
-                  <input type="text" name="where" id="where" placeholder="Where" class="form-control">
+                  <input type="text" name="where" id="where" placeholder="Where" class="form-control" value="<?php echo htmlspecialchars($_POST['email'],ENT_QUOTES,'UTF-8');?>"/>
+                　<?php if ($error['where'] == 'blank'):?>
+                  <p classs="error"> *場所を入力してください</p>
+                  <?php endif;?>
                 </div>
+
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">Purpose:</label>
-                  <input type="text" name="purpose" id="purpose" placeholder="Purpose" class="form-control">
+                  <input type="text" name="remark" placeholder="Purpose" class="form-control" value="<?php echo htmlspecialchars($_POST['email'],ENT_QUOTES,'UTF-8');?>"/>
+                　<?php if ($error['remark'] == 'blank'):?>
+                  <p classs="error"> *目的を入力してください</p>
+                  <?php endif;?>
                 </div>
-                <div class="form-group form-inline">
+                
+                <!-- <div class="form-group form-inline">
                   <label for="name" class="control-label">Date:</label>
-                  <input type="text" name="date" id="date" placeholder="Date" class="form-control">
-                </div>
+                  <input type="text" name="date" id="date" placeholder="Date" class="form-control" value=
+                  
+                </div> -->
                 <div class="pull-center">
-                    <button type="button" class="btn btn-default">
-                      <span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Commit
-                    </button>
+                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Commit</button>
                 </div>
             </form>
         </div>
@@ -435,8 +518,5 @@
 		});
 	</script>    
 
-
-
-  
   </body>
 </html>
