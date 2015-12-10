@@ -3,8 +3,15 @@
 	require('dbconnect.php');
 
 	//投稿を取得する
-	$sql = sprintf('SELECT * FROM plans WHERE status<>2 ORDER BY created DESC');
+	$_POST['categories']=2;
+	$category_id=$_POST['categories'];
+	$sql = sprintf('SELECT * FROM plans WHERE category_id=%d AND status<>2 ORDER BY created DESC', $_POST['categories']);
 	$plans = mysqli_query($db, $sql) or die(mysqli_error($db));
+
+	//カテゴリー名を取得する
+	$sql = sprintf('SELECT * FROM categories WHERE id=%d', $category_id);
+	$categories = mysqli_query($db, $sql) or die(mysqli_error($db));
+	$category = mysqli_fetch_assoc($categories);
 
 ?>
 <!DOCTYPE html>
@@ -58,7 +65,7 @@
 	<div class="container">	
 		<div class="row mt centered">
 			<div class="col-lg-4 col-lg-offset-4">
-				<h3>Learning English(カテゴリー名表示)</h3>
+				<h3><?php echo $category['name']; ?></h3>
 				<hr>
 			</div>
 		</div>
@@ -67,16 +74,16 @@
 			while($plan = mysqli_fetch_assoc($plans)):
 		?>
 		<div class="row mt">
-			<div class="col-lg-4 col-md-4 col-xs-12 desc">
-				<span class="kikaku1">
+			<div class="col-lg-3 col-md-3 col-xs-12">
+				<span class="kikaku1"><a href="chat.php?plan_id=<?php echo $plan['id']; ?>">
 					<div class="b-wrapper">
-					  	<h4><?php echo $plan['title']?></h4>
-					  	<p>Date:<?php echo $plan['day']?></p>
-					  	<p>Time:<?php echo $plan['time']?></p>
-					  	<p>Where:<?php echo $plan['place']?></p>
-					  	<p>Remark:<?php echo $plan['remark']?></p>
+					  	<h4><?php echo $plan['title']; ?></h4>
+					  	<p>Date:<?php echo $plan['day']; ?></p>
+					  	<p>Time:<?php echo $plan['time']; ?></p>
+					  	<p>Where:<?php echo $plan['place']; ?></p>
+					  	<p>Remark:<?php echo $plan['remark']; ?></p>
 					</div>
-				</span>
+				</span></a>
 				<hr-d>
 			</div><!-- col-lg-4 -->
 		<?php
