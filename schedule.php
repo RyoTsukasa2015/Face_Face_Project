@@ -2,10 +2,36 @@
 	session_start();
 	require('dbconnect.php');
 
-	//投稿を取得する
 	$_POST['categories']=2;
 	$category_id=$_POST['categories'];
-	$sql = sprintf('SELECT * FROM plans WHERE category_id=%d AND status<>2 ORDER BY created DESC', $_POST['categories']);
+
+	//ページング
+	if (isset($_GET['page'])) {
+		$page = $_GET['page'];
+	}else{
+		$page = 1;
+	}
+
+	//1ページに表示する件数を決める。
+	$limit_qty = 5;
+	//もし$pageにマイナスが入っていた場合、1に置き換えたい
+	$page = max($page, 1);
+
+	//最終ページを取得する
+	$sql = sprintf('SELECT COUNT(*) AS cnt FROM plans WHERE category_id=%d AND status<>2', $category_id);
+	$recordSet = mysqli_query($db, $sql);
+	$table = mysqli_fetch_assoc($recordSet);
+	$maxPage = ceil($table['cnt'] / $limit_qty);
+	//最大ページより大きい数を指定されても、最大ページに置き換える
+	$page = min($page, $maxPage);
+
+	//開始データの開始番号を割り出す
+	//SQL文のLIMIT句の開始番号は0からなので、データの最初を0にしておく
+	$start = ($page - 1) * $limit_qty;
+	$start = max(0, $start);
+
+	//投稿を取得する
+	$sql = sprintf('SELECT * FROM plans WHERE category_id=%d AND status<>2 ORDER BY created DESC LIMIT %d, %d', $_POST['categories'], $start, $limit_qty);
 	$plans = mysqli_query($db, $sql) or die(mysqli_error($db));
 
 	//カテゴリー名を取得する
@@ -92,9 +118,47 @@
 		</div><!-- /container -->
 
 
-	<div class="next">
-		 	<a href="">次へ</a>
-	</div>	
+  <ul class="pagination">
+    <li>
+		<?php
+			if ($page > 1) {
+		?>
+				<a href="schedule.php?page=<?php print($page - 1); ?>" aria-label="Previous">
+		        	<span aria-hidden="true">&laquo;</span>
+      			</a>
+		<?php
+			}else{
+		?>
+				<a href="#" aria-label="Previous">
+		        	<span aria-hidden="true">&laquo;</span>
+				</a>
+		<?php
+			}
+		?>
+    </li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li>
+		<?php
+			if ($page > 1) {
+		?>
+				<a href="schedule.php?page=<?php print($page + 1); ?>" aria-label="Next">
+		        	<span aria-hidden="true">&raquo;</span>
+		      	</a>
+		<?php
+			}else{
+		?>
+				<a href="#" aria-label="Next">
+		        	<span aria-hidden="true">&laquo;</span>
+				</a>
+		<?php
+			}
+		?>
+    </li>
+  </ul>
 
   </body>
 </html>
