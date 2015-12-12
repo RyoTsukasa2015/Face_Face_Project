@@ -40,6 +40,8 @@
 					 $category_id, $start, $limit_qty);
 	$plans = mysqli_query($db, $sql) or die(mysqli_error($db));
 
+//仮
+$user_id = 1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,7 +87,7 @@
 
       	<div class="header-right btnk">
           <ul class="nav navbar-nav navbar-right" >
-            <li><a href="mypage.php"><strong>My Page</strong></a></li>
+            <li><a href="mypage.php?user=<?php echo $user_id ?>"><strong>My Page</strong></a></li>
           </ul>
       	</div>
       </div>
@@ -94,7 +96,7 @@
 	<div class="container">	
 		<div class="row mt centered">
 			<div class="col-lg-4 col-lg-offset-4">
-				<h3><?php echo $category['name']; ?></h3>
+				<h3><?php echo $category['name']; ?>
 				<hr>
 			</div>
 		</div>
