@@ -9,8 +9,20 @@ if (!empty($_POST)){
     if($_POST['title']==''){
         $error['title'] ='blank';
     }
-    if($_POST['date']==''){
-        $error['date'] ='blank';
+    if($_POST['day']==''){
+        $error['day'] ='blank';
+    }else{  
+        if(!preg_match('/^[0-9]{4}\/[0-9]{1,2}\/[0-9]{1,2}$/', $_POST['day'])) {
+         
+        }else{ 
+            list($year, $momth, $day) = preg_split("/\-/", $_POST['day']);
+            if(!checkdate($momth, $day, $year)){
+            
+            }
+        
+        }
+
+
     }
     if($_POST['time']==''){
         $error['time'] ='blank';
@@ -22,11 +34,32 @@ if (!empty($_POST)){
         $error['remark'] ='blank';
     }
     
-    if (empty($error)) {
+    //ファイルの拡張子チェック
+    // $fileName = $_FILES($_POST['picture']);
+    // if(!empty($fileName)){
+    //     $ext = substr($fileName, -3);
+    //     if ($ext !='jpg' && $ext !='gif'&& $ext !='jpeg'&& $ext !='png'){
+    //         $error['picture'] ='type';
+    //     }
+    // }
+    // if (empty($error)) {
+    //画面をアップロードする。date('YmdHis')のファイルをアップロードしているときの日時。例えば、20151104151539など。時間差を利用し誰のファイルかどうか区分したいため。
+    //$_FILESスーパーグローバル変数
+    // $image = date('YmdHis') . $_FILES['']['name'];
+    //  move_uploaded_file($_FILES['image']['tmp_name'],'../member_picture/'.$image);
+
+
+
+
+       if (empty($error)) {
         $_SESSION['join'] = $_POST;
         header('Location:mypage.php');
         exit();
-    }
+        } 
+
+    
+
+
 }
 
 
@@ -35,37 +68,26 @@ if (!empty($_POST)){
 
     if(!empty($_POST)) {
     //登録処理をする
-    $sql = sprintf('INSERT INTO plans SET category_id=1, user_id=1, title="%s", day="%s",time="%s",place="%s", remark="%s" created=NOW()',
+    $sql = sprintf('INSERT INTO plans SET category_id=%d, user_id=%d, title="%s", day=%d,time=%d,place="%s", remark="%s",created=NOW()',
     
+    mysqli_real_escape_string($db,$_POST['category_id']),
+    mysqli_real_escape_string($db,$_POST['user_id']),
     mysqli_real_escape_string($db,$_POST['title']),
+    mysqli_real_escape_string($db,$_POST['day']),
+    mysqli_real_escape_string($db,$_POST['time']),
+    mysqli_real_escape_string($db,$_POST['place']),
+    mysqli_real_escape_string($db,$_POST['remark']),
+    mysqli_real_escape_string($db,$_POST['created']),
 
-
-
-
-
-    mysqli_real_escape_string($db,$_SESSION['join']['email']),
-    mysqli_real_escape_string($db,sha1($_SESSION['join']['password'])),
-    mysqli_real_escape_string($db,$_SESSION['join']['image']),
     date('Y-m-d H:i:s')
     );
 
     mysqli_query($db,$sql)or die(mysqli_error($db));
-
-    
     header('Location: mypage.php');
     exit();
-
 }
 
-
-
-
 ?>
-
-
-
-
-
 
 
 
@@ -280,15 +302,19 @@ if (!empty($_POST)){
                 
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">Date:</label>
-                  <input type="text" name="date" id="date" placeholder="Date" class="form-control" value="<?php echo htmlspecialchars($_POST['email'],ENT_QUOTES,'UTF-8');?>"/>
+                  <input type="text" name="day" id="date" placeholder="2012/01/12 " class="form-control" value="<?php echo htmlspecialchars($_POST['email'],ENT_QUOTES,'UTF-8');?>"/>
                   <?php if ($error['day'] == 'blank'):?>
+                  
+
+
+
                   <p classs="error"> *日付を入力してください</p>
                   <?php endif;?>
                 </div>
                 
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">When:</label>
-                  <input type="text" name="when" id="when" placeholder="When" class="form-control" value="<?php echo htmlspecialchars($_POST['email'],ENT_QUOTES,'UTF-8');?>"/>
+                  <input type="text" name="when" id="when" placeholder="example:10:00 " class="form-control" value="<?php echo htmlspecialchars($_POST['when'],ENT_QUOTES,'UTF-8');?>"/>
                   <?php if ($error['when'] == 'blank'):?>
                   <p classs="error"> *時を入力してください</p>
                   <?php endif;?>
@@ -296,15 +322,15 @@ if (!empty($_POST)){
                 
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">Where:</label>
-                  <input type="text" name="where" id="where" placeholder="Where" class="form-control" value="<?php echo htmlspecialchars($_POST['email'],ENT_QUOTES,'UTF-8');?>"/>
+                  <input type="text" name="where" id="where" placeholder="Where" class="form-control" value="<?php echo htmlspecialchars($_POST['where'],ENT_QUOTES,'UTF-8');?>"/>
                 　<?php if ($error['where'] == 'blank'):?>
                   <p classs="error"> *場所を入力してください</p>
                   <?php endif;?>
                 </div>
 
                 <div class="form-group form-inline">
-                  <label for="name" class="control-label">Purpose:</label>
-                  <input type="text" name="remark" placeholder="Purpose" class="form-control" value="<?php echo htmlspecialchars($_POST['email'],ENT_QUOTES,'UTF-8');?>"/>
+                  <label for="name" class="control-label">Remark:</label>
+                  <input type="text" name="remark" placeholder="Purpose" class="form-control" value="<?php echo htmlspecialchars($_POST['remark'],ENT_QUOTES,'UTF-8');?>"/>
                 　<?php if ($error['remark'] == 'blank'):?>
                   <p classs="error"> *目的を入力してください</p>
                   <?php endif;?>
@@ -315,6 +341,11 @@ if (!empty($_POST)){
                   <input type="text" name="date" id="date" placeholder="Date" class="form-control" value=
                   
                 </div> -->
+                <div class="form-group form-inline">
+                <input type="file" name="image" size="70" value="<?php echo htmlspecialchars($_POST['photo'],ENT_QUOTES,'UTF-8');?>"/> 
+                </div>
+
+
                 <div class="pull-center">
                     <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Commit</button>
                 </div>
