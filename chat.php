@@ -1,4 +1,17 @@
 <?php
+
+	session_start();
+	require('dbconnect.php');
+
+	$plan_id = $_GET['plan_id'];
+	//chatの内容を取得する
+	$sql_p = sprintf('SELECT * FROM plans pl, posts po WHERE pl.id=po.plan_id AND po.plan_id=%d ORDER BY po.created DESC', $plan_id);
+	$posts = mysqli_query($db, $sql_p) or die(mysqli_error($db));
+
+	//URLを取得する
+	$sql_u = sprintf('SELECT u.url FROM plans p, url u WHERE p.id=u.plan_id AND u.plan_id=%d ORDER BY u.created DESC', $plan_id);
+	$urls = mysqli_query($db, $sql_u) or die(mysqli_error($db));
+
   //仮
   $user_id = 1;
 ?>
@@ -55,7 +68,7 @@
 
 		<div class="row mt centered ">
 			<div class="col-lg-4 col-lg-offset-4">
-				<h2>1. Let's go together! Camotes Islands!!</h2>
+				<h2>たいとる</h2>
 				<hr>
 			</div>
 		</div><!-- /row -->
@@ -71,9 +84,13 @@
 			    </div><!-- /input-group -->
 				<hr-d>
 				<ol>
-					<li><a href="https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%A2%E3%83%86%E3%82%B9%E8%AB%B8%E5%B3%B6">https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%A2%E3%83%86%E3%82%B9%E8%AB%B8%E5%B3%B6</a></li>
-					<li><a href="http://pare-ko.com/philippines-travel-camotes">http://pare-ko.com/philippines-travel-camotes</a></li>
-					<li><a href="http://www.tripadvisor.jp/Attractions-g2019898-Activities-Camotes_Islands_Visayas.html">http://www.tripadvisor.jp/Attractions-g2019898-Activities-Camotes_Islands_Visayas.html</a></li>
+			 	<?php
+					while($url = mysqli_fetch_assoc($urls)):
+			?>
+					<li><a href="<?php echo $url['url']; ?>"><?php echo $url['url']; ?></a></li>
+				<?php
+					endwhile;
+				?>
 				</ol>
 				<br>
 				<p>MEMO</p>
