@@ -2,8 +2,13 @@
 	session_start();
 	require('dbconnect.php');
 
-	$_POST['categories']=2;
-	$category_id=$_POST['categories'];
+	//カテゴリー選択されていない場合、TOP画面に戻る
+	if (!isset($_GET['cat_id'])) {
+		header('Location: face_to_face.php');
+		exit();
+	}
+
+	$category_id=$_GET['cat_id'];
 
 	//ページング
 	if (isset($_GET['page'])) {
@@ -101,86 +106,37 @@ $user_id = 1;
 			</div>
 		</div>
 
-	 	<?php
-			// while($plan = mysqli_fetch_assoc($plans)):
-		?>
-<!-- 		<div class="row mt">
-			<div class="col-lg-3 col-md-3 col-xs-12"> -->
-				<!-- <span class="kikaku1"><a href="chat.php?plan_id=<?php //echo $plan['id']; ?>"> -->
-					<!--<div class="b-wrapper"> 
-					  	<h4><?php //echo $plan['title']; ?></h4>
-					  	<p>Date:<?php //echo $plan['day']; ?></p>
-					  	<p>Time:<?php //echo $plan['time']; ?></p>
-					  	<p>Where:<?php //echo $plan['place']; ?></p>
-					  	<p>Remark:<?php //echo $plan['remark']; ?></p>
-					</div>
-				</span></a>
-				<hr-d>
-			</div><!-- col-lg-4 -->
-		<?php
-			//endwhile;
-		?>
-		<!-- </div>/container -->
+	<div class="container">
+		<div class="row">
+		 	<?php
+				while($plan = mysqli_fetch_assoc($plans)):
+			?>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 
-<!-- <!-- カード案１ -->
-<!--     <div class="container" id="tourpackages-carousel">
-      <div class="row">
-        <div class="col-lg-12"><h1>My Card <a class="btn icon-btn btn-primary pull-right" href="#"><span class="glyphicon btn-glyphicon glyphicon-plus img-circle"></span> Add New Card</a></h1></div>
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-          <div class="thumbnail">
-              <div class="caption">
-                <div class='col-lg-12'>
-                    <span class="glyphicon glyphicon-credit-card"></span>
-                    <span class="glyphicon glyphicon-trash pull-right text-primary"></span>
-                </div>
-                <div class='col-lg-12 well well-add-card'>
-                    <h4>John Deo Mobilel</h4>
-                </div>
-                <div class='col-lg-12'>
-                    <p>4111xxxxxxxx3265</p>
-                    <p class"text-muted">Exp: 12-08</p>
-                </div>
-                <button type="button" class="btn btn-primary btn-xs btn-update btn-add-card">Update</button>
-                <button type="button" class="btn btn-danger btn-xs btn-update btn-add-card">Vrify Now</button>
-                <span class='glyphicon glyphicon-exclamation-sign text-danger pull-right icon-style'></span>
-            </div>
-          </div>
-        </div>
- --><!-- カード案１ -->
+	            <div class="card hovercard">
+	                <div class="cardheader">
 
-<!-- カード案２ -->
-<div class="container">
-	<div class="row">
-	 	<?php
-			while($plan = mysqli_fetch_assoc($plans)):
-		?>
-		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+	                </div>
+	                <div class="avatar">
+	                    <a href="mypage.php?user=<?php echo $plan['user_id'] ?>"><img alt="" src="http://lorempixel.com/100/100/people/9/"></a>
+	                </div>
+	                <div class="info">
+	                    <div class="title">
+	                        <a href="chat.php?plan_id=<?php echo $plan['id']; ?>"><?php echo $plan['title']; ?></a>
+	                    </div>
+	                    <div class="desc">Date:<?php echo $plan['day']; ?></div>
+	                    <div class="desc">Time:<?php echo $plan['time']; ?></div>
+	                    <div class="desc">Where:<?php echo $plan['place']; ?></div>
+	                    <div class="desc">Remark:<?php echo $plan['remark']; ?></div>
+	                </div>
+	            </div>
 
-            <div class="card hovercard">
-                <div class="cardheader">
-
-                </div>
-                <div class="avatar">
-                    <a href="mypage.php?user=<?php echo $plan['user_id'] ?>"><img alt="" src="http://lorempixel.com/100/100/people/9/"></a>
-                </div>
-                <div class="info">
-                    <div class="title">
-                        <a href="chat.php?plan_id=<?php echo $plan['id']; ?>"><?php echo $plan['title']; ?></a>
-                    </div>
-                    <div class="desc">Date:<?php echo $plan['day']; ?></div>
-                    <div class="desc">Time:<?php echo $plan['time']; ?></div>
-                    <div class="desc">Where:<?php echo $plan['place']; ?></div>
-                    <div class="desc">Remark:<?php echo $plan['remark']; ?></div>
-                </div>
-            </div>
-
-        </div>
-		<?php
-			endwhile;
-		?>
+	        </div>
+			<?php
+				endwhile;
+			?>
+		</div>
 	</div>
-</div>
-<!-- カード案２ -->
 
     <div class="container">
       <div class="row">
@@ -202,13 +158,15 @@ $user_id = 1;
 					<?php
 						}
 					?>
-<!-- 			    </li>
-			    <li><a href="#">1</a></li>
-			    <li><a href="#">2</a></li>
-			    <li><a href="#">3</a></li>
-			    <li><a href="#">4</a></li>
-			    <li><a href="#">5</a></li>
-			    <li> -->
+			    </li>
+			    <?php
+			    	for ($i=0; $i < $maxPage; $i++) {
+			    ?> 
+			    		<li><a href="schedule.php?page=<?php echo($i + 1); ?>"><?php echo $i + 1 ?></a></li>
+			    <?php
+			    	}
+			    ?>
+			    <li>
 					<?php
 						if ($page < $maxPage) {
 					?>

@@ -1,19 +1,54 @@
 <?php
 
+  //仮
+  $user_id = 1;
+
 	session_start();
 	require('dbconnect.php');
 
 	$plan_id = $_GET['plan_id'];
+
+	//planの内容を取得する
+	$sql_pl = sprintf('SELECT * FROM plans WHERE id=%d', $plan_id);
+	$plans = mysqli_query($db, $sql_pl) or die(mysqli_error($db));
+   	$plan = mysqli_fetch_assoc($plans);
+
 	//chatの内容を取得する
 	$sql_p = sprintf('SELECT * FROM plans pl, posts po WHERE pl.id=po.plan_id AND po.plan_id=%d ORDER BY po.created DESC', $plan_id);
 	$posts = mysqli_query($db, $sql_p) or die(mysqli_error($db));
 
 	//URLを取得する
-	$sql_u = sprintf('SELECT u.url FROM plans p, url u WHERE p.id=u.plan_id AND u.plan_id=%d ORDER BY u.created DESC', $plan_id);
+	$sql_u = sprintf('SELECT u.url FROM plans p, url u WHERE p.id=u.plan_id AND u.plan_id=%d ORDER BY u.created', $plan_id);
 	$urls = mysqli_query($db, $sql_u) or die(mysqli_error($db));
 
-  //仮
-  $user_id = 1;
+	//URLを書き込む
+	if (isset($_POST['url'])) {
+		$sql=sprintf('INSERT INTO url SET plan_id=%d, url="%s", created=NOW()',
+				mysqli_real_escape_string($db, $plan_id),
+				mysqli_real_escape_string($db, $_POST['url'])
+			);
+		mysqli_query($db, $sql) or die(mysqli_error($db));
+
+		header('Location: chat.php?plan_id='.$plan_id);
+		exit();
+	}
+
+	//memoを取得する
+	$sql_m = sprintf('SELECT m.memo FROM plans p, memos m WHERE p.id=m.plan_id AND m.plan_id=%d AND m.user_id=%d ORDER BY m.created', $plan_id, $user_id);
+	$memos = mysqli_query($db, $sql_m) or die(mysqli_error($db));
+
+	//memoを書き込む
+	if (isset($_POST['memo'])) {
+		$sql=sprintf('INSERT INTO memos SET plan_id=%d, user_id=%d, memo="%s", created=NOW()',
+				mysqli_real_escape_string($db, $plan_id),
+				mysqli_real_escape_string($db, $user_id),
+				mysqli_real_escape_string($db, $_POST['memo'])
+			);
+		mysqli_query($db, $sql) or die(mysqli_error($db));
+
+		header('Location: chat.php?plan_id='.$plan_id);
+		exit();
+	}
 ?>
 
 <!DOCTYPE html>
@@ -68,101 +103,104 @@
 
 		<div class="row mt centered ">
 			<div class="col-lg-4 col-lg-offset-4">
-				<h2>たいとる</h2>
+				<h2><?php echo $plan['title'] ?></h2>
 				<hr>
 			</div>
 		</div><!-- /row -->
+		<form action="" method="post">
+			<div class="row mt">
+				<div class="col-lg-3 col-md-3 col-xs-12 desc">
+					<p>URL</p>
+					<div class="input-group">
+				      <input type="text" name="url" class="form-control" placeholder="URL..?" <?php if ($user_id!=$plan['user_id']){echo 'disabled'; }; ?>>
+				      <span class="input-group-btn">
+				        <button class="btn btn-default" type="submit" <?php if($user_id!=$plan['user_id']){echo 'disabled'; }; ?>>input</button>
+				      </span>
+				    </div><!-- /input-group -->
+					<hr-d>
+					<ol>
+				 	<?php
+						while($url = mysqli_fetch_assoc($urls)):
+					?>
+						<li><a href="<?php echo $url['url']; ?>" target="_blank"><?php echo $url['url']; ?></a></li>
+					<?php
+						endwhile;
+					?>
+					</ol>
+					<br>
+					<p>MEMO</p>
+					<div class="input-group">
+				      <input type="text" name="memo" class="form-control" placeholder="memo..?">
+				      <span class="input-group-btn">
+				        <button class="btn btn-default" type="submit">input</button>
+				      </span>
+				    </div><!-- /input-group -->
+					<hr-d>
+					<?php
+						while($memo = mysqli_fetch_assoc($memos)):
+					?>
+						<p class="lead"><?php echo $memo['memo']; ?></p>
+					<?php
+						endwhile;
+					?>
 
-		<div class="row mt">
-			<div class="col-lg-3 col-md-3 col-xs-12 desc">
-				<p>URL</p>
-				<div class="input-group">
-			      <input type="text" class="form-control" placeholder="URL..?">
-			      <span class="input-group-btn">
-			        <button class="btn btn-default" type="button">input</button>
-			      </span>
-			    </div><!-- /input-group -->
-				<hr-d>
-				<ol>
-			 	<?php
-					while($url = mysqli_fetch_assoc($urls)):
-			?>
-					<li><a href="<?php echo $url['url']; ?>"><?php echo $url['url']; ?></a></li>
-				<?php
-					endwhile;
-				?>
-				</ol>
-				<br>
-				<p>MEMO</p>
-				<div class="input-group">
-			      <input type="text" class="form-control" placeholder="memo..?">
-			      <span class="input-group-btn">
-			        <button class="btn btn-default" type="button">input</button>
-			      </span>
-			    </div><!-- /input-group -->
-				<hr-d>
-				<p></p>
-				<p class="lead">December 18th</p>
-				<p class="lead">8:00~</p>
+				</div><!-- col-lg-4 -->
+				
+				<div class="col-lg-6 col-md-6 col-xs-12 desc">
+					<p>CHAT</p>
+					<div class="input-group">
+				      <input type="text" class="form-control" placeholder="Let's talk..">
+				      <span class="input-group-btn">
+				        <button class="btn btn-default" type="button">send</button>
+				      </span>
+				    </div><!-- /input-group -->
+				    <hr-d>
+				    <div class="col-lg-3 col-md-3 col-xs-12 desc">
+						<p><a href="#">hanako</a></p>
+						<p><a href="#">taro</a></p>
+						<p><a href="#">Jennifer</a></p>
+						<p><a href="#">Karen</a></p>
+						<p><a href="#">Joan</a></p>
+						<p><a href="#">Joy</a></p>
+						<p><a href="#">Goro</a></p>
+						<p><a href="#">Megu</a></p>
+					</div>
+				    <div class="col-lg-9 col-md-9 col-xs-12 desc">
+						<p>;)</p>
+						<p>I can't wait!!!</p>
+						<p>Let's go !</p>
+						<p>Yeah!</p>
+						<p>Good~~~~.</p>
+						<p>I send URL.</p>
+						<p>Hi!</p>
+						<p>Good morning!</p>
+					</div>
 
+				</div><!-- col-lg-4 -->
+				
+				<div class="col-lg-3 col-md-3 col-xs-12 desc">
+					<p>DECISION</p>
+					<div class="input-group">
+				      <input type="text" class="form-control" placeholder="decision" <?php if($user_id!=$plan['user_id']){echo 'disabled'; }; ?>>
+				      <span class="input-group-btn">
+				        <button class="btn btn-default" type="button" <?php if($user_id!=$plan['user_id']){echo 'disabled'; }; ?>>input</button>
+				      </span>
+				    </div><!-- /input-group -->
+					<hr-d>
+					<p></p>
+					<p class="lead">日付；12月15日（水）</p>
+					<p class="lead">時間；8:00~</p>
+					<p class="lead">場所；カモテス島</p>
+					<p class="lead">目的；10mジャンプをする！</p>
+					<p class="lead">メンバー；hanako</p>
 
-			</div><!-- col-lg-4 -->
-			
-			<div class="col-lg-6 col-md-6 col-xs-12 desc">
-				<p>CHAT</p>
-				<div class="input-group">
-			      <input type="text" class="form-control" placeholder="Let's talk..">
-			      <span class="input-group-btn">
-			        <button class="btn btn-default" type="button">send</button>
-			      </span>
-			    </div><!-- /input-group -->
-			    <hr-d>
-			    <div class="col-lg-3 col-md-3 col-xs-12 desc">
-					<p><a href="#">hanako</a></p>
-					<p><a href="#">taro</a></p>
-					<p><a href="#">Jennifer</a></p>
-					<p><a href="#">Karen</a></p>
-					<p><a href="#">Joan</a></p>
-					<p><a href="#">Joy</a></p>
-					<p><a href="#">Goro</a></p>
-					<p><a href="#">Megu</a></p>
-				</div>
-			    <div class="col-lg-9 col-md-9 col-xs-12 desc">
-					<p>;)</p>
-					<p>I can't wait!!!</p>
-					<p>Let's go !</p>
-					<p>Yeah!</p>
-					<p>Good~~~~.</p>
-					<p>I send URL.</p>
-					<p>Hi!</p>
-					<p>Good morning!</p>
-				</div>
-
-			</div><!-- col-lg-4 -->
-			
-			<div class="col-lg-3 col-md-3 col-xs-12 desc">
-				<p>DECISION</p>
-				<div class="input-group">
-			      <input type="text" class="form-control" placeholder="decision">
-			      <span class="input-group-btn">
-			        <button class="btn btn-default" type="button">input</button>
-			      </span>
-			    </div><!-- /input-group -->
-				<hr-d>
-				<p></p>
-				<p class="lead">日付；12月15日（水）</p>
-				<p class="lead">時間；8:00~</p>
-				<p class="lead">場所；カモテス島</p>
-				<p class="lead">目的；10mジャンプをする！</p>
-				<p class="lead">メンバー；hanako</p>
-
-				<div class="pull-right">
-					<button type="button" class="btn btn-default">
-					  <span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Save
-					</button>
-				</div>
-			</div><!-- col-lg-4 -->
-			
+					<div class="pull-right">
+						<button type="button" class="btn btn-default">
+						  <span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Save
+						</button>
+					</div>
+				</div><!-- col-lg-4 -->
+			</form>
 		</div><!-- /row -->
 	</div><!-- /container -->
 	
