@@ -13,9 +13,27 @@
 	$plans = mysqli_query($db, $sql_pl) or die(mysqli_error($db));
    	$plan = mysqli_fetch_assoc($plans);
 
-	//chatの内容を取得する
-	$sql_p = sprintf('SELECT * FROM plans pl, posts po WHERE pl.id=po.plan_id AND po.plan_id=%d ORDER BY po.created DESC', $plan_id);
+	//messageの内容を取得する
+	$sql_p = sprintf('SELECT * FROM plans pl, posts po, users u WHERE pl.id=po.plan_id AND po.user_id=u.id AND po.plan_id=%d ORDER BY po.created DESC', $plan_id);
 	$posts = mysqli_query($db, $sql_p) or die(mysqli_error($db));
+
+	//DBから取得した内容を配列へ格納する
+	while($post = mysqli_fetch_assoc($posts)){
+		$posts_r[]=$post;
+	}
+
+	//messageを書き込む
+	if (isset($_POST['message'])) {
+		$sql=sprintf('INSERT INTO posts SET message="%s", plan_id=%d, user_id=%d, created=NOW()',
+				mysqli_real_escape_string($db, $_POST['message']),
+				mysqli_real_escape_string($db, $plan_id),
+				mysqli_real_escape_string($db, $user_id)
+			);
+		mysqli_query($db, $sql) or die(mysqli_error($db));
+
+		header('Location: chat.php?plan_id='.$plan_id);
+		exit();
+	}
 
 	//URLを取得する
 	$sql_u = sprintf('SELECT u.url FROM plans p, url u WHERE p.id=u.plan_id AND u.plan_id=%d ORDER BY u.created', $plan_id);
@@ -149,31 +167,30 @@
 				<div class="col-lg-6 col-md-6 col-xs-12 desc">
 					<p>CHAT</p>
 					<div class="input-group">
-				      <input type="text" class="form-control" placeholder="Let's talk..">
+				      <input type="text" name="message" class="form-control" placeholder="Let's talk..">
 				      <span class="input-group-btn">
-				        <button class="btn btn-default" type="button">send</button>
+				        <button class="btn btn-default" type="submit">send</button>
 				      </span>
 				    </div><!-- /input-group -->
 				    <hr-d>
 				    <div class="col-lg-3 col-md-3 col-xs-12 desc">
-						<p><a href="#">hanako</a></p>
-						<p><a href="#">taro</a></p>
-						<p><a href="#">Jennifer</a></p>
-						<p><a href="#">Karen</a></p>
-						<p><a href="#">Joan</a></p>
-						<p><a href="#">Joy</a></p>
-						<p><a href="#">Goro</a></p>
-						<p><a href="#">Megu</a></p>
+					<?php
+						foreach ($posts_r as $post_each) {
+					?>
+						<p><a href="mypage.php?user_id=<?php echo $post_each['user_id']; ?>"><?php echo $post_each['nickname']; ?></a></p>
+					<?php
+						}
+					?>
 					</div>
 				    <div class="col-lg-9 col-md-9 col-xs-12 desc">
-						<p>;)</p>
-						<p>I can't wait!!!</p>
-						<p>Let's go !</p>
-						<p>Yeah!</p>
-						<p>Good~~~~.</p>
-						<p>I send URL.</p>
-						<p>Hi!</p>
-						<p>Good morning!</p>
+					<?php
+						foreach ($posts_r as $post_each) {
+					?>
+						<p><?php echo $post_each['message']; ?></p>
+					<?php
+						}
+					?>
+
 					</div>
 
 				</div><!-- col-lg-4 -->
@@ -188,11 +205,11 @@
 				    </div><!-- /input-group -->
 					<hr-d>
 					<p></p>
-					<p class="lead">日付；12月15日（水）</p>
-					<p class="lead">時間；8:00~</p>
-					<p class="lead">場所；カモテス島</p>
-					<p class="lead">目的；10mジャンプをする！</p>
-					<p class="lead">メンバー；hanako</p>
+					<p class="lead">Date；<?php echo $plan['day']; ?></p>
+					<p class="lead">Time；<?php echo $plan['time']; ?></p>
+					<p class="lead">Place；<?php echo $plan['place']; ?></p>
+					<p class="lead">Remark；<?php echo $plan['remark']; ?></p>
+					<p class="lead">Members；考え中</p>
 
 					<div class="pull-right">
 						<button type="button" class="btn btn-default">
