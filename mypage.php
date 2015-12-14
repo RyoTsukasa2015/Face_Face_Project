@@ -40,27 +40,27 @@ if (!empty($_POST)){
     //     $ext = substr($fileName, -3);
     //     if ($ext !='jpg' && $ext !='gif'&& $ext !='jpeg'&& $ext !='png'){
     //         $error['picture'] ='type';
-    //     }
-    // }
-    // if (empty($error)) {
+    
+    if (empty($error)) {
     //画面をアップロードする。date('YmdHis')のファイルをアップロードしているときの日時。例えば、20151104151539など。時間差を利用し誰のファイルかどうか区分したいため。
     //$_FILESスーパーグローバル変数
-    // $image = date('YmdHis') . $_FILES['']['name'];
-    //  move_uploaded_file($_FILES['image']['tmp_name'],'../member_picture/'.$image);
+    $image = date('YmdHis') . $_FILES['image'];
+     move_uploaded_file($_FILES['image']['tmp_name'],'assets/img/plan_img'.$image);
+
+     $_SESSION['join'] = $_POST;
+     $_SESSION['join']['image'] = $image;
+     //画面遷移。画面移動という意味。
+     header('Location:mypage.php');
+     exit();
+    }
+
+
+    // var_dump($_FILES);
+
+    } 
 
 
 
-
-       if (empty($error)) {
-        $_SESSION['join'] = $_POST;
-        header('Location:mypage.php');
-        exit();
-        } 
-
-    
-
-
-}
 
 
 
@@ -68,7 +68,7 @@ if (!empty($_POST)){
 
     if(!empty($_POST)) {
     //登録処理をする
-    $sql = sprintf('INSERT INTO plans SET category_id=%d, user_id=%d, title="%s", day=%d,time=%d,place="%s", remark="%s",created=NOW()',
+    $sql = sprintf('INSERT INTO plans SET category_id=%d, user_id=%d, title="%s", day="%s",time=%d,place="%s", remark="%s",created=NOW()',
     
     mysqli_real_escape_string($db,$_POST['category_id']),
     mysqli_real_escape_string($db,$_POST['user_id']),
@@ -292,50 +292,45 @@ if (!empty($_POST)){
         </div><!-- /row -->
 
 
-
  
         <div class="container">
             <form method="post" action="" class="text-center">
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">Title:</label>
-                  <input type="text" name="title" id="title" placeholder="Title" class="form-control" value="<?php echo htmlspecialchars($_POST['name'], ENT_QUOTES,'UTF-8');?>"/>
-                  <?php if ($error['title'] == 'blank'):?>
+                  <input type="text" name="title" id="title" placeholder="Title" class="form-control">
+                  <?php if (isset($error['title']) && ($error['title'] == 'blank')):?>
                   <p classs="error"> *タイトルを入力してください</p>
                   <?php endif;?>
                 </div>
                 
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">Date:</label>
-                  <input type="text" name="day" id="date" placeholder="2012/01/12 " class="form-control" value="<?php echo htmlspecialchars($_POST['email'],ENT_QUOTES,'UTF-8');?>"/>
-                  <?php if ($error['day'] == 'blank'):?>
-                  
-
-
-
+                  <input type="text" name="day" id="date" placeholder="2012/01/12 " class="form-control">
+                  <?php if (isset($error['day']) && ($error['day'] == 'blank')):?>
                   <p classs="error"> *日付を入力してください</p>
                   <?php endif;?>
                 </div>
                 
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">When:</label>
-                  <input type="text" name="when" id="when" placeholder="example:10:00 " class="form-control" value="<?php echo htmlspecialchars($_POST['when'],ENT_QUOTES,'UTF-8');?>"/>
-                  <?php if ($error['when'] == 'blank'):?>
+                  <input type="text" name="when" id="when" placeholder="example:10:00 " class="form-control">
+                  <?php if (isset($error['when']) && ($error['when'] == 'blank')):?>
                   <p classs="error"> *時を入力してください</p>
                   <?php endif;?>
                 </div>
                 
                 <div class="form-group form-inline">
-                  <label for="name" class="control-label">Where:</label>
-                  <input type="text" name="where" id="where" placeholder="Where" class="form-control" value="<?php echo htmlspecialchars($_POST['where'],ENT_QUOTES,'UTF-8');?>"/>
-                　<?php if ($error['where'] == 'blank'):?>
+                  <label for="name" class="control-label">Place:</label>
+                  <input type="text" name="place" id="place" placeholder="place" class="form-control">
+                　<?php if (isset($error['place']) && ($error['place'] == 'blank')):?>
                   <p classs="error"> *場所を入力してください</p>
                   <?php endif;?>
                 </div>
 
                 <div class="form-group form-inline">
                   <label for="name" class="control-label">Remark:</label>
-                  <input type="text" name="remark" placeholder="Purpose" class="form-control" value="<?php echo htmlspecialchars($_POST['remark'],ENT_QUOTES,'UTF-8');?>"/>
-                　<?php if ($error['remark'] == 'blank'):?>
+                  <input type="text" name="remark" placeholder="Purpose" class="form-control">
+                　<?php if (isset($error['remark']) && ($error['remark'] == 'blank')):?>
                   <p classs="error"> *目的を入力してください</p>
                   <?php endif;?>
                 </div>
@@ -346,7 +341,7 @@ if (!empty($_POST)){
                   
                 </div> -->
                 <div class="form-group form-inline">
-                <input type="file" name="image" size="70" value="<?php echo htmlspecialchars($_POST['photo'],ENT_QUOTES,'UTF-8');?>"/> 
+                    <input type="file" name="image" size="70"> 
                 </div>
 
 
@@ -378,7 +373,7 @@ if (!empty($_POST)){
                 <a href="#" class="btn kikakusya">Entrance for planner</a>
                 <a href="#" class="btn sannkasya">Entrance for participant</a>
                 <hr-d>
-                <div class="iine">GOOD</div>
+                
                     
             </div><!-- col-lg-4 -->
                 

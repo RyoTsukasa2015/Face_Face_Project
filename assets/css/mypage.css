@@ -1,0 +1,9 @@
+
+li{
+	list-style-type: none;
+	line-height: 100px;
+}
+
+.form-group.form-inline{
+	text-align: center;
+}
