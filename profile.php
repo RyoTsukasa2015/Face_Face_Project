@@ -159,8 +159,8 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-lg-3 col-sm-6">
-
+    <!-- <div class="col-lg-3 col-sm-6">
+ -->
             <div class="card hovercard">
                 <div class="cardheader">
 
@@ -194,7 +194,7 @@
                 </div>
             </div>
 
-        </div>
+        <!-- </div> -->
 
   </div>
 </div>

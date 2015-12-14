@@ -1,8 +1,12 @@
 
-.col-lg-6.col-sm-6.screen{
-	text-align: center;
+.card.hovercard{
+    text-align: center;
 }
 
+.col-lg-3{
+    width:100%;
+    height: 70%;
+}
 
 .card {
     padding-top: 20px;
@@ -25,7 +29,6 @@
     padding: 0 20px;
     margin: 0;
 }
-
 
 .card .card-heading.simple {
     font-size: 20px;
@@ -50,6 +53,7 @@
     display: inline-block;
     vertical-align: top;
 }
+
 .card .card-heading.image .card-heading-header h3 {
     margin: 0;
     font-size: 14px;
@@ -103,6 +107,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 .card-comments .media-heading {
     font-size: 13px;
     font-weight: bold;
@@ -122,6 +127,7 @@
 .card.people:first-child {
     margin-left: 0;
 }
+
 .card.people .card-top {
     position: absolute;
     top: 0;
@@ -139,6 +145,7 @@
 .card.people .card-top.blue {
     background-color: #427fed;
 }
+
 .card.people .card-info {
     position: absolute;
     top: 150px;
@@ -152,24 +159,6 @@
     box-sizing: border-box;
 }
 
-.card.people .card-info .title {
-    display: block;
-    margin: 8px 14px 0 14px;
-    overflow: hidden;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 18px;
-    color: #404040;
-}
-.card.people .card-info .desc {
-    display: block;
-    margin: 8px 14px 0 14px;
-    overflow: hidden;
-    font-size: 12px;
-    line-height: 16px;
-    color: #737373;
-    text-overflow: ellipsis;
-}
 
 .card.people .card-bottom {
     position: absolute;
@@ -184,6 +173,26 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+.card.people .card-info .title {
+    display: block;
+    margin: 8px 14px 0 14px;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 18px;
+    color: #404040;
+}
+
+.card.people .card-info .desc {
+    display: block;
+    margin: 8px 14px 0 14px;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 16px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
 .card.hovercard {
     position: relative;
     padding-top: 0;
@@ -203,11 +212,12 @@
     top: -50px;
     margin-bottom: -50px;
 }
+
 .card.hovercard .avatar img {
-    width: 300px;
-    height: 300px;
-    max-width: 500px;
-    max-height: 500px;
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
@@ -225,10 +235,11 @@
     color: #262626;
     vertical-align: middle;
 }
+
 .card.hovercard .info .desc {
     overflow: hidden;
-    font-size: 40px;
-    line-height: 60px;
+    font-size: 12px;
+    line-height: 20px;
     color: #737373;
     text-overflow: ellipsis;
 }
@@ -239,6 +250,4 @@
 }
 
 .btn{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
-
-
 
