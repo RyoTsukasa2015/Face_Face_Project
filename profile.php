@@ -82,7 +82,7 @@
         <span class="sr-only">Toggle navigation</span>
         <i class="fa fa-bars fa-lg"></i>
       </button>
-      <div class="logo" href="index.top画面" ><img src="assets/img/logo.png" height=80px width=130px><i class="fas fas-logo"></i></div>
+      <div class="logo" href="face_to_face.php" ><img src="assets/img/logo.png" height=80px width=130px><i class="fas fas-logo"></i></div>
     </div>
 
     <div class="navbar-collapse collapse">
@@ -147,6 +147,8 @@
       </ul> -->
       <div class="header-right btnk">
           <ul class="nav navbar-nav navbar-right" >
+            <li><a href="mypage.php?user=<?php echo $user_id ?>"><strong>My Page</strong></a></li>
+            <li><a href="schedule.php"><strong>Schedule</strong></a></li>
             <!-- <li><a href="マイページのurl"><strong>My Page</strong></a></li> -->
             <!-- <li><a href="file:///Users/ryotsukasa/Documents/web201510/Marco%20Theme/index-ichiran.html"><strong>Schedule</strong></a></li> -->
           </ul>

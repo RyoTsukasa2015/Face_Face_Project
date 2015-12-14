@@ -113,6 +113,7 @@ if (!empty($_POST)){
     <link href="assets/css/colors/color-74c9be.css" rel="stylesheet">    
     <link href="assets/css/animations.css" rel="stylesheet">
     <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/mypage.css" rel="stylesheet">
     
     
     <!-- JavaScripts needed at the beginning
@@ -174,7 +175,9 @@ if (!empty($_POST)){
         <span class="sr-only">Toggle navigation</span>
         <i class="fa fa-bars fa-lg"></i>
       </button>
-      <div class="logo" href="index.top画面" ><img src="assets/img/logo.png" height=80px width=130px><i class="fas fas-logo"></i></div>
+      <div class="logo">
+        <li><a href="face_to_face.php"><img src="assets/img/logo.png" height=80px width=130px><i class="fas fas-logo"></i><a>
+      </div>
     </div>
 
     <div class="navbar-collapse collapse">
@@ -239,8 +242,9 @@ if (!empty($_POST)){
       </ul> -->
       <div class="header-right btnk">
           <ul class="nav navbar-nav navbar-right" >
-            <li><a href="マイページのurl"><strong>Schedule</strong></a></li>
+            <li><a href="schedule.php"><strong>Schedule</strong></a></li>
             <!-- <li><a href="file:///Users/ryotsukasa/Documents/web201510/Marco%20Theme/index-ichiran.html"><strong>Schedule</strong></a></li> -->
+            <li><a href="profile.php"><strong>Profile</strong></a></li>
           </ul>
       </div><!-- <div class="header-right btn1"> -->
     </div>
