@@ -192,7 +192,7 @@
 }
 
 .card.hovercard .cardheader {
-    background: url("http://lorempixel.com/850/280/nature/4/");
+    /*background: url("http://lorempixel.com/850/280/nature/4/");*/
     background-size: cover;
     height: 135px;
 }
@@ -240,3 +240,19 @@
 }
 
 .btn{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
+
+.title{
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis; /* Opera9,10対応 */
+}
+
+.desc{
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis; /* Opera9,10対応 */
+}

@@ -18,7 +18,7 @@
 	}
 
 	//1ページに表示する件数を決める。
-	$limit_qty = 8;
+	$limit_qty = 12;
 	//もし$pageにマイナスが入っていた場合、1に置き換えたい
 	$page = max($page, 1);
 
@@ -41,7 +41,7 @@
 	$category = mysqli_fetch_assoc($categories);
 
 	//投稿を取得する
-	$sql = sprintf('SELECT * FROM plans WHERE category_id=%d AND status<>2 ORDER BY created DESC LIMIT %d, %d',
+	$sql = sprintf('SELECT * FROM plans pl, users u where u.id=pl.user_id AND pl.category_id=%d AND pl.status<>2 ORDER BY pl.created DESC LIMIT %d, %d',
 					 $category_id, $start, $limit_qty);
 	$plans = mysqli_query($db, $sql) or die(mysqli_error($db));
 
@@ -114,11 +114,11 @@ $user_id = 1;
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 
 	            <div class="card hovercard">
-	                <div class="cardheader">
+	                <div class="cardheader" style="background:url(assets/img/plan_img/<?php echo $plan['picture']; ?>)">
 
 	                </div>
 	                <div class="avatar">
-	                    <a href="mypage.php?user=<?php echo $plan['user_id'] ?>"><img alt="" src="http://lorempixel.com/100/100/people/9/"></a>
+	                    <a href="mypage.php?user=<?php echo $plan['user_id'] ?>"><img alt="" src="assets/img/user_img/<?php echo $plan['upicture']; ?> "></a>
 	                </div>
 	                <div class="info">
 	                    <div class="title">
