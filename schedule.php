@@ -41,7 +41,7 @@
 	$category = mysqli_fetch_assoc($categories);
 
 	//投稿を取得する
-	$sql = sprintf('SELECT * FROM plans pl, users u where u.id=pl.user_id AND pl.category_id=%d AND pl.status<>2 ORDER BY pl.created DESC LIMIT %d, %d',
+	$sql = sprintf('SELECT pl.*, u.upicture FROM plans pl LEFT JOIN users u ON u.id=pl.user_id WHERE pl.category_id=%d AND pl.status<>2 ORDER BY pl.created DESC LIMIT %d, %d',
 					 $category_id, $start, $limit_qty);
 	$plans = mysqli_query($db, $sql) or die(mysqli_error($db));
 
