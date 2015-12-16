@@ -41,7 +41,7 @@
 	$category = mysqli_fetch_assoc($categories);
 
 	//投稿を取得する
-	$sql = sprintf('SELECT pl.*, u.upicture FROM plans pl LEFT JOIN users u ON u.id=pl.user_id WHERE pl.category_id=%d AND pl.status<>2 ORDER BY pl.created DESC LIMIT %d, %d',
+	$sql = sprintf('SELECT pl.*, u.nickname, u.upicture FROM plans pl LEFT JOIN users u ON u.id=pl.user_id WHERE pl.category_id=%d AND pl.status<>2 ORDER BY pl.created DESC LIMIT %d, %d',
 					 $category_id, $start, $limit_qty);
 	$plans = mysqli_query($db, $sql) or die(mysqli_error($db));
 
@@ -86,7 +86,7 @@ $user_id = 1;
 		        <i class="fa fa-bars fa-lg"></i>
 	      	</button>
 		    <div class="logo">
-		    	<a href="face_to_face.php"><img src="assets/img/logo.png" height=80px width=130px><i class="fas fas-logo"></i></a>
+		    	<a href="face_to_face.php"><img src="assets/img/logo.png" style="height:70px;"><i class="fas fas-logo"></i></a>
 		    </div>
 	   	</div>
 
@@ -100,6 +100,11 @@ $user_id = 1;
  
 	<div class="container">	
 		<div class="row mt centered">
+			<ul class="nav nav-tabs nav-justified">
+				  <li role="presentation" class="active"><a href="#"><?php echo $category['name']; ?></a></li>
+				  <li role="presentation" class=""><a href="#"><?php echo $category['name']; ?></a></li>
+				  <li role="presentation" class=""><a href="#">Messages</a></li>
+				</ul>
 			<div class="col-lg-4 col-lg-offset-4">
 				<h3><?php echo $category['name']; ?>
 				<hr>
@@ -118,7 +123,7 @@ $user_id = 1;
 
 	                </div>
 	                <div class="avatar">
-	                    <a href="mypage.php?user=<?php echo $plan['user_id'] ?>"><img alt="" src="assets/img/user_img/<?php echo $plan['upicture']; ?> "></a>
+	                    <a href="mypage.php?user=<?php echo $plan['user_id'] ?>"><img src="assets/img/user_img/<?php echo $plan['upicture']; ?> " alt="<?php echo $plan['nickname']; ?>" ></a>
 	                </div>
 	                <div class="info">
 	                    <div class="title">

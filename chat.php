@@ -6,6 +6,12 @@
 	session_start();
 	require('dbconnect.php');
 
+	//企画が選択されていない場合、TOP画面に戻る
+	if (!isset($_GET['plan_id'])) {
+		header('Location: face_to_face.php');
+		exit();
+	}
+
 	$plan_id = $_GET['plan_id'];
 
 	//planの内容を取得する
@@ -23,7 +29,7 @@
 	}
 
 	//messageを書き込む
-	if (isset($_POST['message'])) {
+	if (isset($_POST['b_message'])) {
 		$sql=sprintf('INSERT INTO posts SET message="%s", plan_id=%d, user_id=%d, created=NOW()',
 				mysqli_real_escape_string($db, $_POST['message']),
 				mysqli_real_escape_string($db, $plan_id),
@@ -40,7 +46,7 @@
 	$urls = mysqli_query($db, $sql_u) or die(mysqli_error($db));
 
 	//URLを書き込む
-	if (isset($_POST['url'])) {
+	if (isset($_POST['b_url'])) {
 		$sql=sprintf('INSERT INTO url SET plan_id=%d, url="%s", created=NOW()',
 				mysqli_real_escape_string($db, $plan_id),
 				mysqli_real_escape_string($db, $_POST['url'])
@@ -56,7 +62,7 @@
 	$memos = mysqli_query($db, $sql_m) or die(mysqli_error($db));
 
 	//memoを書き込む
-	if (isset($_POST['memo'])) {
+	if (isset($_POST['b_memo'])) {
 		$sql=sprintf('INSERT INTO memos SET plan_id=%d, user_id=%d, memo="%s", created=NOW()',
 				mysqli_real_escape_string($db, $plan_id),
 				mysqli_real_escape_string($db, $user_id),
@@ -103,7 +109,7 @@
         <span class="sr-only">Toggle navigation</span>
         <i class="fa fa-bars fa-lg"></i>
       </button>
-      <a href="face_to_face.php"><img src="assets/img/logo.png" height=80px width=130px><i class="fas fas-logo"></i></a>
+      <a href="face_to_face.php"><img src="assets/img/logo.png" style="height:70px;"><i class="fas fas-logo"></i></a>
     </div>
 
     <div class="navbar-collapse collapse">
@@ -127,12 +133,12 @@
 		</div><!-- /row -->
 		<form action="" method="post">
 			<div class="row mt">
-				<div class="col-lg-3 col-md-3 col-xs-12 desc">
+				<div class="col-lg-3 col-md-3 col-xs-3 desc">
 					<p>URL</p>
 					<div class="input-group">
 				      <input type="text" name="url" class="form-control" placeholder="URL..?" <?php if ($user_id!=$plan['user_id']){echo 'disabled'; }; ?>>
 				      <span class="input-group-btn">
-				        <button class="btn btn-default" type="submit" <?php if($user_id!=$plan['user_id']){echo 'disabled'; }; ?>>input</button>
+				        <button class="btn btn-default" type="submit" name="b_url" value="input" <?php if($user_id!=$plan['user_id']){echo 'disabled'; }; ?>>input</button>
 				      </span>
 				    </div><!-- /input-group -->
 					<hr-d>
@@ -150,7 +156,7 @@
 					<div class="input-group">
 				      <input type="text" name="memo" class="form-control" placeholder="memo..?">
 				      <span class="input-group-btn">
-				        <button class="btn btn-default" type="submit">input</button>
+				        <button class="btn btn-default" type="submit" name="b_memo" value="input">input</button>
 				      </span>
 				    </div><!-- /input-group -->
 					<hr-d>
@@ -164,43 +170,47 @@
 
 				</div><!-- col-lg-4 -->
 				
-				<div class="col-lg-6 col-md-6 col-xs-12 desc">
+				<div class="col-lg-6 col-md-6 col-xs-6 desc">
 					<p>CHAT</p>
 					<div class="input-group">
 				      <input type="text" name="message" class="form-control" placeholder="Let's talk..">
 				      <span class="input-group-btn">
-				        <button class="btn btn-default" type="submit">send</button>
+				        <button class="btn btn-default" type="submit" name="b_message" value="send">send</button>
 				      </span>
 				    </div><!-- /input-group -->
 				    <hr-d>
-				    <div class="col-lg-3 col-md-3 col-xs-12 desc">
+				    <div class="col-lg-3 col-md-3 col-xs-3 desc">
 					<?php
+					if(!empty($posts_r)){
 						foreach ($posts_r as $post_each) {
 					?>
 						<p><a href="mypage.php?user_id=<?php echo $post_each['user_id']; ?>"><?php echo $post_each['nickname']; ?></a></p>
 					<?php
 						}
+					}
 					?>
 					</div>
-				    <div class="col-lg-9 col-md-9 col-xs-12 desc">
+				    <div class="col-lg-9 col-md-9 col-xs-9 desc">
 					<?php
+					if(!empty($posts_r)){
 						foreach ($posts_r as $post_each) {
 					?>
 						<p><?php echo $post_each['message']; ?></p>
 					<?php
 						}
+					}
 					?>
 
 					</div>
 
 				</div><!-- col-lg-4 -->
 				
-				<div class="col-lg-3 col-md-3 col-xs-12 desc">
+				<div class="col-lg-3 col-md-3 col-xs-3 desc">
 					<p>DECISION</p>
 					<div class="input-group">
 				      <input type="text" class="form-control" placeholder="decision" <?php if($user_id!=$plan['user_id']){echo 'disabled'; }; ?>>
 				      <span class="input-group-btn">
-				        <button class="btn btn-default" type="button" <?php if($user_id!=$plan['user_id']){echo 'disabled'; }; ?>>input</button>
+				        <button class="btn btn-default" type="button" name="decision" value="input" <?php if($user_id!=$plan['user_id']){echo 'disabled'; }; ?>>decision</button>
 				      </span>
 				    </div><!-- /input-group -->
 					<hr-d>

@@ -33,7 +33,7 @@
             <span class="sr-only">Toggle navigation</span>
             <i class="fa fa-bars fa-lg"></i>
           </button>
-          <a href="face_to_face.php"><img src="assets/img/logo.png" height=80px width=130px><i class="fas fas-logo"></i></a>
+          <a href="face_to_face.php"><img src="assets/img/logo.png" style="height:70px;"><i class="fas fas-logo"></i></a>
         </div>
       </div>
     </div>
