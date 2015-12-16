@@ -66,13 +66,12 @@ $user_id = 1;
     <link href="assets/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="assets/css/main-ichiran.css" rel="stylesheet">
     <link href="assets/css/colors/color-74c9be.css" rel="stylesheet">    
     <link href="assets/css/animations.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
     <link href="assets/css/font-awesome.min.css" rel="stylesheet">
     <link href="assets/css/teisei-ichiran.css" rel="stylesheet">
-    <link href="assets/css/card.css" rel="stylesheet">
-    <link href="assets/css/card2.css" rel="stylesheet">
+    <link href="assets/css/schedule.css" rel="stylesheet">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   </head>
 
@@ -100,11 +99,11 @@ $user_id = 1;
  
 	<div class="container">	
 		<div class="row mt centered">
-			<ul class="nav nav-tabs nav-justified">
-				  <li role="presentation" class="active"><a href="#"><?php echo $category['name']; ?></a></li>
-				  <li role="presentation" class=""><a href="#"><?php echo $category['name']; ?></a></li>
+<!-- 			<ul class="nav nav-tabs nav-justified">
+				  <li role="presentation" class="active"><a href="#"><?php //echo $category['name']; ?></a></li>
+				  <li role="presentation" class=""><a href="#"><?php //echo $category['name']; ?></a></li>
 				  <li role="presentation" class=""><a href="#">Messages</a></li>
-				</ul>
+				</ul> -->
 			<div class="col-lg-4 col-lg-offset-4">
 				<h3><?php echo $category['name']; ?>
 				<hr>

@@ -185,10 +185,10 @@
 
 .card.hovercard {
     position: relative;
-    padding-top: 0;
+    padding: 0;
     overflow: hidden;
     text-align: center;
-    background-color: #dcdcdc;
+    background-color: #f0fff0;
 }
 
 .card.hovercard .cardheader {
