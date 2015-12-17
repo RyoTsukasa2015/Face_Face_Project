@@ -64,7 +64,7 @@
 
 	//memoを書き込む
 	if (isset($_POST['b_memo']) && $_POST['memo']!="") {
-		if (empty($memos)) {
+		if (empty($memo)) {
 			$sql=sprintf('INSERT INTO memos SET plan_id=%d, user_id=%d, memo="%s", created=NOW()',
 				mysqli_real_escape_string($db, $plan_id),
 				mysqli_real_escape_string($db, $user_id),
@@ -86,17 +86,16 @@
 		exit();
 	}
 
-	//planを書き込む
+	//を書き込む
 	if (isset($_POST['update'])) {
-		if (empty($memos)) {
-			$sql=sprintf('UPDATE memos SET plan_id=%d, user_id=%d, memo="%s", created=NOW() WHERE id=%d',
-				mysqli_real_escape_string($db, $plan_id),
-				mysqli_real_escape_string($db, $user_id),
-				mysqli_real_escape_string($db, $_POST['memo']),
-				mysqli_real_escape_string($db, $memo['id'])
-			);
-
-		}
+		$sql=sprintf('UPDATE plans SET day="%s", time=%d, place="%s", remark="%s" WHERE id=%d',
+			mysqli_real_escape_string($db, $_POST['d_day']),
+			mysqli_real_escape_string($db, $_POST['d_time']),
+			mysqli_real_escape_string($db, $_POST['d_place']),
+			mysqli_real_escape_string($db, $_POST['d_remark']),
+			mysqli_real_escape_string($db, $plan_id)
+		);
+		var_dump($sprintfql);
 
 		mysqli_query($db, $sql) or die(mysqli_error($db));
 
@@ -115,6 +114,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="assets/ico/favicon.png">
+    <meta http-equiv="refresh" content="30">
 
     <title>Chat</title>
 
@@ -184,6 +184,7 @@
 					</ol>
 					<br>
 					<p>MEMO</p>
+					<p></p>
 					<div class="input-group">
 						<input class="input-group-btn">
 				        <button class="btn btn-default" type="submit" name="b_memo" value="input">input</button>
@@ -240,18 +241,19 @@
 				    <!-- </div>/input-group -->
 					<hr-d>
 					<p></p>
-					<p class="lead">Date；<input type="text" class="form-control" value="<?php echo $plan['day']; ?>">
-					<p class="lead">Time；<input type="text" class="form-control" value="<?php echo $plan['time']; ?>">
-					<p class="lead">Place；<textarea type="text" class="form-control"><?php echo $plan['place']; ?></textarea>
-					<p class="lead">Remark；<textarea type="text" class="form-control"><?php echo $plan['remark']; ?></textarea>
-					<p class="lead">Members；プルダウンで選択</p>
+					<input class="input-group-btn">
+					<p class="lead">Date；<input type="text" class="form-control" name="d_day" value="<?php echo $plan['day']; ?>">
+					<p class="lead">Time；<input type="text" class="form-control" name="d_time" value="<?php echo $plan['time']; ?>">
+					<p class="lead">Place；<textarea type="text" class="form-control" name="d_place"><?php echo $plan['place']; ?></textarea>
+					<p class="lead">Remark；<textarea type="text" class="form-control" name="d_remark"><?php echo $plan['remark']; ?></textarea>
+					<p class="lead">Members；プルダウンで選択?</p>
 
 					<div class="pull-right">
-						<button type="button" class="btn btn-default">
-						  <span class="glyphicon glyphicon-saved" aria-hidden="true" name="update" value="update"></span> Update
+						<button type="submit" class="btn btn-default" name="update" value="update">
+						  <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span> Update
 						</button>
-						<button type="button" class="btn btn-default">
-						  <span class="glyphicon glyphicon-saved" aria-hidden="true" name="save" value="confirm"></span> Confirm
+						<button type="submit" class="btn btn-default" name="save" value="confirm">
+						  <span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Confirm
 						</button>
 					</div>
 				</div><!-- col-lg-4 -->
