@@ -56,7 +56,7 @@ $user_id = 1;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="assets/ico/favicon.png">
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
 
     <title>Schedule</title>
 
@@ -104,8 +104,8 @@ $user_id = 1;
 				  <li role="presentation" class=""><a href="#"><?php //echo $category['name']; ?></a></li>
 				  <li role="presentation" class=""><a href="#">Messages</a></li>
 				</ul> -->
-			<div class="col-lg-4 col-lg-offset-4">
-				<h3><?php echo $category['name']; ?>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h3><?php echo $category['name']; ?><a class="btn icon-btn btn-primary pull-right" href="<?php if ($user_id=="") {echo "login.php"; }else{echo "mypage.php";} ?>"><span class="glyphicon btn-glyphicon glyphicon-plus img-circle"> Add New Card</span></a>
 				<hr>
 			</div>
 		</div>
