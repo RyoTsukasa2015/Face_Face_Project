@@ -126,7 +126,12 @@ $user_id = 1;
 	                </div>
 	                <div class="info">
 	                    <div class="title">
-	                        <a href="chat.php?plan_id=<?php echo $plan['id']; ?>"><?php echo $plan['title']; ?></a>
+	                    	<?php if ($plan['status']==0){ ?>
+		                    	<div class="label label-primary">Join?</div>
+		                    	<a href="chat.php?plan_id=<?php echo $plan['id']; ?>"><?php echo $plan['title']; ?></a>
+		                    <?php }else{ ?>
+	                        	<?php echo $plan['title']; ?>
+	                        <?php } ?>
 	                    </div>
 	                    <div class="desc">Date:<?php echo $plan['day']; ?></div>
 	                    <div class="desc">Time:<?php echo $plan['time']; ?></div>
