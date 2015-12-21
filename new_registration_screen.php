@@ -3,12 +3,12 @@
     session_start();
 
     require('dbconnect.php');
-var_dump($_FILES['image']);
+
     $image = "";
     if (!empty($_POST)) {
        if (!empty($_FILES['image'])) {
             $image = date('YmdHis') . $_FILES['image']['name'];
-            move_uploaded_file($_FILES['image']['tmp_name'], '/assets/img/user_img/' . $image); 
+            move_uploaded_file($_FILES['image']['tmp_name'], 'assets/img/user_img/' . $image); 
         }
 
         $sql = sprintf('INSERT INTO users SET nickname="%s", email="%s", password="%s", age=%d, gender="%s", hobby="%s", country="%s", upicture="%s", created=NOW()',
@@ -23,8 +23,8 @@ var_dump($_FILES['image']);
             );
         mysqli_query($db, $sql) or die(mysqli_error($db));
 
-        // header('Location: thanks.php');
-        // exit();
+        header('Location: face_to_face.php');
+        exit();
     }
 
 ?>
@@ -66,8 +66,10 @@ var_dump($_FILES['image']);
         <span class="sr-only">Toggle navigation</span>
         <i class="fa fa-bars fa-lg"></i>
       </button>
-      <div class="logo" href="face_to_face.php" ><img src="assets/img/logo.png" style="height:70px;"><i class="fas fas-logo"></i></div>
-    </div>
+        <div class="logo">
+            <a href="face_to_face.php"><img src="assets/img/logo.png" style="height:70px;"><i class="fas fas-logo"></i></a>
+        </div>
+                </div>
 
       <div class="header-right btnk">
           <ul class="nav navbar-nav navbar-right" >
@@ -101,7 +103,7 @@ var_dump($_FILES['image']);
                             <div>
                                 <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span>
                                 <span class="fileinput-exists">Change</span>
-                                <input type="file" name="image"></span><?php echo $_FILES['image']['name']; ?>
+                                <input type="file" name="image"></span>
                             </div>
                         </div>
                         <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Registration</button>
