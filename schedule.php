@@ -92,6 +92,7 @@ $user_id = 1;
       	<div class="header-right btnk">
           <ul class="nav navbar-nav navbar-right" >
             <li><a href="mypage.php?user=<?php echo $user_id ?>"><strong>My Page</strong></a></li>
+            <li><a href="login.php"><strong>Login</strong></a></li>
           </ul>
       	</div>
       </div>
@@ -109,7 +110,7 @@ $user_id = 1;
 				<hr>
 			</div>
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-				<a class="btn icon-btn btn-primary pull-right" href="<?php if ($user_id=="") {echo "login.php"; }else{echo "mypage.php";} ?>"><span class="glyphicon btn-glyphicon glyphicon-plus"> Add New Card</span></a>	
+				<a href="<?php if ($user_id=="") {echo "login.php"; }else{echo "mypage.php";} ?>"><button type="button" class="btn btn-primary btn-circle btn-lg pull-left"><i class="glyphicon glyphicon-plus"></i></button></a>	
 			</div>
 		</div>
 

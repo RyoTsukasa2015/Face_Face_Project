@@ -239,7 +239,7 @@
     margin-bottom: 17px;
 }
 
-.btn{ border-radius: 50%; width:100px; height:32px; line-height:18px;  }
+.btn{ border-radius: 50%; height:32px; line-height:18px;  }
 
 .title{
     width: 100%;
@@ -313,3 +313,12 @@ p
 .btn-update
 {
     margin-left:15px;
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
