@@ -104,9 +104,12 @@ $user_id = 1;
 				  <li role="presentation" class=""><a href="#"><?php //echo $category['name']; ?></a></li>
 				  <li role="presentation" class=""><a href="#">Messages</a></li>
 				</ul> -->
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<h3><?php echo $category['name']; ?><a class="btn icon-btn btn-primary pull-right" href="<?php if ($user_id=="") {echo "login.php"; }else{echo "mypage.php";} ?>"><span class="glyphicon btn-glyphicon glyphicon-plus img-circle"> Add New Card</span></a>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xs-offset-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4">
+				<h3><?php echo $category['name']; ?>
 				<hr>
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<a class="btn icon-btn btn-primary pull-right" href="<?php if ($user_id=="") {echo "login.php"; }else{echo "mypage.php";} ?>"><span class="glyphicon btn-glyphicon glyphicon-plus"> Add New Card</span></a>	
 			</div>
 		</div>
 
