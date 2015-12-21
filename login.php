@@ -83,7 +83,21 @@
          </div> 	
        </div><!--under  -->
   </div><!-- content"> -->
+		<footer class="bg-dark-gray padding-top40" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+
+	<div id="" class="container">
+		<div class="row">
+
 		
+			<div class="col-sm-3 col-xs-12 bg-white no-space">
+				<div class="fb-page fb_iframe_widget" data-href="https://www.facebook.com/pages/Phil-Portal/475643152593855" data-width="245" data-hide-cover="false" data-show-facepile="true" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/facebook"></blockquote></div></div>
+			</div>
+
+		</div>
+	</div>
+
+	<p class="foot-text text-center top30 white"> 2015.Face×Fece  All Rights Reserved.</p>
+</footer>
   </body>
 
 	<footer>
