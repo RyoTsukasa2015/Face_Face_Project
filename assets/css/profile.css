@@ -214,10 +214,10 @@
 }
 
 .card.hovercard .avatar img {
-    width: 100px;
-    height: 100px;
-    max-width: 100px;
-    max-height: 100px;
+    width: 250px;
+    height: 250px;
+    max-width: 250px;
+    max-height: 250px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
@@ -225,23 +225,24 @@
 }
 
 .card.hovercard .info {
-    padding: 4px 8px 10px;
+    padding: 100px 100px 10px;
 }
 
 .card.hovercard .info .title {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     font-size: 24px;
-    line-height: 1;
+    /*line-height: 50;*/
     color: #262626;
-    vertical-align: middle;
+    /*text-align: middle;*/
 }
 
 .card.hovercard .info .desc {
     overflow: hidden;
     font-size: 12px;
-    line-height: 20px;
+    line-height: 50px;
     color: #737373;
     text-overflow: ellipsis;
+    font-size: 30px;
 }
 
 .card.hovercard .bottom {

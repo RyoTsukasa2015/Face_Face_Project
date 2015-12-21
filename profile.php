@@ -1,3 +1,30 @@
+<?php
+session_start();
+date_default_timezone_set('Asia/Manila');
+
+require('dbconnect.php');
+
+$recordSet = mysqli_query($db,'SELECT * FROM users_id');
+$data = mysqli_fetch_assoc($recordSet);
+echo $data['nickname'];
+
+
+
+
+
+
+?>
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -170,14 +197,15 @@
                 </div>
                 <div class="info">
                     <div class="title">
-                        <a target="_blank" href="http://scripteden.com/">Script Eden</a>
+                        <a target="_blank" href="http://scripteden.com/">Nick Name</a>
                     </div>
-                    <div class="desc">Passionate designer</div>
-                    <div class="desc">Curious developer</div>
-                    <div class="desc">Tech geek</div>
+                    <div class="desc">Age</div>
+                    <div class="desc">Gender</div>
+                    <div class="desc">Hobby</div>
+                    <div class="desc">Country</div>
                 </div>
                 <div class="bottom">
-                  <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
+                  <!-- <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
                         <i class="fa fa-twitter"></i>
                     </a>
                     <a class="btn btn-danger btn-sm" rel="publisher"
@@ -190,7 +218,7 @@
                     </a>接机
                     <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
                         <i class="fa fa-behance"></i>
-                    </a>
+                    </a> -->
                 </div>
             </div>
 
