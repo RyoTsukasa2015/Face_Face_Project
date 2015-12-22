@@ -4,21 +4,40 @@ date_default_timezone_set('Asia/Manila');
 
 require('dbconnect.php');
 
-
-SELECT id, nickname FROM `users` WHERE id=2;
-
-
-
-
 $recordSet = mysqli_query($db,'SELECT * FROM users_id');
-
-
-
-$sql = sprintf('SELECT * FROM users WHERE age="%s" AND gender="%s" AND hobby="%s" AND country="%s"',
-
-
 $data = mysqli_fetch_assoc($recordSet);
-echo $data['nickname'];
+
+
+    
+    if($_GET['user_id'] !=''){
+        //チャット画面から人のプロフィール画面を見たいとき
+        $user_id = $_GET['user_id'];
+    }else{
+        //上記以外（マイページからプロフィール画面を見たいとき）、自分のIDを使う。
+        $user_id = 1;
+    }
+
+
+    if(isset($_SESSION['users_id'])){
+    //変数があるかないかの確認
+        
+
+        $sql = sprintf('SELECT * FROM users WHERE id=%d',
+            mysqli_real_escape_string($db,$user_id));
+
+
+        $record = mysqli_query($db,$sql) or die(mysqli_error($db));
+        $member = mysqli_fetch_assoc($record);
+    } else{
+        header('Location: login.php');
+        exit();
+    }
+
+
+
+
+
+
 
 
 
