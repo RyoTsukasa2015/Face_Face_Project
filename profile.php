@@ -4,7 +4,19 @@ date_default_timezone_set('Asia/Manila');
 
 require('dbconnect.php');
 
+
+SELECT id, nickname FROM `users` WHERE id=2;
+
+
+
+
 $recordSet = mysqli_query($db,'SELECT * FROM users_id');
+
+
+
+$sql = sprintf('SELECT * FROM users WHERE age="%s" AND gender="%s" AND hobby="%s" AND country="%s"',
+
+
 $data = mysqli_fetch_assoc($recordSet);
 echo $data['nickname'];
 
