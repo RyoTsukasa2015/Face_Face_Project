@@ -89,7 +89,7 @@
     			</dl>
     		 </form>
       </div>
-     </div><!-- <div class="forming"> -->
+     </div><!- <div class="forming"> -->
 
       <!--  <div class="under">
     	 <div class="col-lg-4 col-md-4 col-xs-12 desc back" >
@@ -101,7 +101,7 @@
     	 <div class="col-lg-4 col-md-4 col-xs-12 desc" >
     	 	<a href="new_registration_screen.php"><input type="button" value="new entry"></a>
          </div> 	
-       </div><!--under  -->
+       </div><!-under  -->
   </div><!-- content"> -->
 		<footer class="bg-dark-gray padding-top40" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
 
