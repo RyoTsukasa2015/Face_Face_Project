@@ -23,7 +23,7 @@
 	$page = max($page, 1);
 
 	//最終ページを取得する
-	$sql = sprintf('SELECT COUNT(*) AS cnt FROM plans WHERE category_id=%d AND status<>2', $category_id);
+	$sql = sprintf('SELECT COUNT(*) AS cnt FROM plans WHERE category_id=%d AND status=0', $category_id);
 	$recordSet = mysqli_query($db, $sql);
 	$table = mysqli_fetch_assoc($recordSet);
 	$maxPage = ceil($table['cnt'] / $limit_qty);
@@ -130,12 +130,7 @@ $user_id = 1;
 	                </div>
 	                <div class="info">
 	                    <div class="title">
-	                    	<?php if ($plan['status']==0){ ?>
-		                    	<div class="label label-primary">Join?</div>
 		                    	<a href="chat.php?plan_id=<?php echo $plan['id']; ?>"><?php echo $plan['title']; ?></a>
-		                    <?php }else{ ?>
-	                        	<?php echo $plan['title']; ?>
-	                        <?php } ?>
 	                    </div>
 	                    <div class="desc">Date:<?php echo $plan['day']; ?></div>
 	                    <div class="desc">Time:<?php echo $plan['time']; ?></div>
@@ -197,6 +192,11 @@ $user_id = 1;
 					?>
 			    </li>
 			</ul>
+<<<<<<< HEAD
+		</div>
+	  </div>
+	</div>
+=======
 <footer class="bg-dark-gray padding-top40" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
 
 	<div id="" class="container">
@@ -235,5 +235,6 @@ $user_id = 1;
 
 
 
+>>>>>>> 1ff90b3b76fb794fc7dfe47abee87d7295b6d308
   </body>
 </html>
