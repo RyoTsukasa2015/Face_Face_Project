@@ -1,4 +1,9 @@
 <?php
+
+//仮
+$user_id = 1;
+
+
 session_start();
 date_default_timezone_set('Asia/Manila');
 
@@ -72,11 +77,35 @@ if (!empty($_POST)){
       exit();
     }
 
+  //ページング
+  if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+  }else{
+    $page = 1;
+  }
+
+  //1ページに表示する件数を決める。
+  $limit_qty = 12;
+  //もし$pageにマイナスが入っていた場合、1に置き換えたい
+  $page = max($page, 1);
+
+  //最終ページを取得する
+  $sql = sprintf('SELECT COUNT(*) AS cnt FROM plans WHERE user_id=%d AND status<>2', $user_id);
+  $recordSet = mysqli_query($db, $sql);
+  $table = mysqli_fetch_assoc($recordSet);
+  $maxPage = ceil($table['cnt'] / $limit_qty);
+  //最大ページより大きい数を指定されても、最大ページに置き換える
+  $page = min($page, $maxPage);
+
+  //開始データの開始番号を割り出す
+  //SQL文のLIMIT句の開始番号は0からなので、データの最初を0にしておく
+  $start = ($page - 1) * $limit_qty;
+  $start = max(0, $start);
+
   //投稿を取得する
   $sql = sprintf('SELECT pl.*, u.nickname, u.upicture FROM plans pl LEFT JOIN users u ON u.id=pl.user_id WHERE u.id=%d AND pl.status<>2 ORDER BY pl.created DESC LIMIT %d, %d',
-           $category_id, $start, $limit_qty);
+           $user_id, $start, $limit_qty);
   $myplans = mysqli_query($db, $sql) or die(mysqli_error($db));
-
 
 ?>
 
@@ -132,37 +161,6 @@ if (!empty($_POST)){
         </div>
       </div>
   </div>
-
-<!--     <div class="col-lg-10 col-sm-10">
-        <div class="card hovercard">
-            <div class="card-background">
-                <img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/">
- -->                <!-- http://lorempixel.com/850/280/people/9/ -->
-<!--             </div>
-            <div class="useravatar">
-                <img alt="" src="http://lorempixel.com/100/100/people/9/">
-            </div>
-            <div class="card-info"> <span class="card-title">Pamela Anderson</span>
-
-            </div>
-        </div> -->
-<!--         <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
-            <div class="btn-group" role="group">
-                <button type="button" id="stars" class="btn btn-primary" href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <div class="hidden-xs">Stars</div>
-                </button>
-            </div>
-            <div class="btn-group" role="group">
-                <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                    <div class="hidden-xs">Favorites</div>
-                </button>
-            </div>
-            <div class="btn-group" role="group">
-                <button type="button" id="following" class="btn btn-default" href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                    <div class="hidden-xs">Following</div>
-                </button>
-            </div>
-        </div>  -->   
  
         <div class="row mt centered ">
             <div class="col-lg-4 col-lg-offset-4">
@@ -236,182 +234,87 @@ if (!empty($_POST)){
             </form>
         </div>
 
-        <div class="row mt centered ">
-            <div class="col-lg-4 col-lg-offset-4">
-                <h3>Your history</h3>
-                <hr>
-            </div>
-        </div><!-- /row -->
+  <div class="container">
+    <div class="row">
+      <?php
+        while($myplan = mysqli_fetch_assoc($myplans)):
+      ?>
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 
-        <div class="row mt">
-            <div class="col-lg-4 col-md-4 col-xs-12 desc">
-                <span class="kikaku1" href="#">
-                <div class="b-wrapper">
-                    <h4>Schedule１</h4>
-                    <p>Date:</p>
-                    <p>When:</p>
-                    <p>Where:</p>
-                    <p>Purpose:</p>
-                    <p>How many: Min〜Max</p>
-                </div>
-                </span>
-                <a href="#" class="btn kikakusya">Entrance for planner</a>
-                <a href="#" class="btn sannkasya">Entrance for participant</a>
-                <hr-d>
-                
-                    
-            </div><!-- col-lg-4 -->
-                
-            <div class="col-lg-4 col-md-4 col-xs-12 desc">
-                <span class="kikaku2" >
-                    <div class="b-wrapper">
-                        <h4>企画案2</h4>
-                        <p>日付</p>
-                        <p>時間</p>
-                        <p>場所</p>
-                        <p>目的</p>
-                        <p>最小〜最大人数</p>
-                    </div>
-                </span>
-                <a href="#" class="btn kikakusya">企画者用入口</a>
-                <a href="#" class="btn sannkasya">参加者用入口</a>
-                <hr-d>
-                <div class="iine">GOOD</div>
-            </div><!-- col-lg-4 -->
+              <div class="card hovercard">
+                  <div class="cardheader" style="background:url(assets/img/plan_img/<?php echo $myplan['picture']; ?>)">
 
-            <div class="col-lg-4 col-md-4 col-xs-12 desc">
-                <span class="kikaku3" >
-                    <div class="b-wrapper">
-                        <h4>企画案3</h4>
-                        <p>日付</p>
-                        <p>時間</p>
-                        <p>場所</p>
-                        <p>目的</p>
-                        <p>最小〜最大人数</p>
-                    </div>
-                </span>
-                <a href="#" class="btn kikakusya">企画者用入口</a>
-                <a href="#" class="btn sannkasya">参加者用入口</a>
-                <hr-d>
-                <div class="iine">GOOD</div>
-            </div><!-- col-lg-4 -->
-        </div><!-- /row mt -->
+                  </div>
+                  <div class="avatar">
+                      <a href="mypage.php?user=<?php echo $myplan['user_id'] ?>"><img src="assets/img/user_img/<?php echo $myplan['upicture']; ?> " alt="<?php echo $myplan['nickname']; ?>" ></a>
+                  </div>
+                  <div class="info">
+                      <div class="title">
+                          <a href="chat.php?plan_id=<?php echo $myplan['id']; ?>"><?php echo $myplan['title']; ?></a>
+                      </div>
+                      <div class="desc">Date:<?php echo $myplan['day']; ?></div>
+                      <div class="desc">Time:<?php echo $myplan['time']; ?></div>
+                      <div class="desc">Where:<?php echo $myplan['place']; ?></div>
+                      <div class="desc">Remark:<?php echo $myplan['remark']; ?></div>
+                  </div>
+              </div>
 
-        <div class="row mt-2">
-            <div class="col-lg-4 col-md-4 col-xs-12 desc">
-                <span class="kikaku4" href="#">
-                    <div class="b-wrapper">
-                        <h4>企画案4</h4>
-                        <p>日付</p>
-                        <p>時間</p>
-                        <p>場所</p>
-                        <p>目的</p>
-                        <p>最小〜最大人数</p>
-                    </div>
-                </span>
-                <a href="#" class="btn kikakusya">企画者用入口</a>
-                <a href="#" class="btn sannkasya">参加者用入口</a>
-                
-                <hr-d>
-                <div class="iine">GOOD</div>
-            </div><!-- col-lg-4 -->
-
-            <div class="col-lg-4 col-md-4 col-xs-12 desc">
-                <span class="kikaku5" href="#">
-                    <div class="b-wrapper">
-                        <h4>企画案5</h4>
-                        <p>日付</p>
-                        <p>時間</p>
-                        <p>場所</p>
-                        <p>目的</p>
-                        <p>最小〜最大人数</p>
-                    </div>
-                </span>
-
-                <a href="#" class="btn kikakusya">企画者用入口</a>
-                <a href="#" class="btn sannkasya">参加者用入口</a>
-                <hr-d>
-                <div class="iine">GOOD</div>
-            </div><!-- col-lg-4 -->
-
-            <div class="col-lg-4 col-md-4 col-xs-12 desc">
-                <span class="kikaku6" href="#">
-                    <div class="b-wrapper">
-                        <h4>企画案6</h4>
-                        <p>日付</p>
-                        <p>時間</p>
-                        <p>場所</p>
-                        <p>目的</p>
-                        <p>最小〜最大人数</p>
-                    </div>
-                </span>
-                <a href="#" class="btn kikakusya">企画者用入口</a>
-                <a href="#" class="btn sannkasya">参加者用入口</a>
-                <hr-d>
-                <div class="iine">GOOD</div>
-            </div><!-- col-lg-4 -->
-        </div><!-- /row mt-2 -->
-
-        <div class="row mt-3">
-            <div class="col-lg-4 col-md-4 col-xs-12 desc">
-                <span class="kikaku7" href="#">
-                    <div class="b-wrapper">
-                        <h4>企画案7</h4>
-                        <p>日付</p>
-                        <p>時間</p>
-                        <p>場所</p>
-                        <p>目的</p>
-                        <p>最小〜最大人数</p>
-                    </div>
-                </span>
-                <a href="#" class="btn kikakusya">企画者用入口</a>
-                <a href="#" class="btn sannkasya">参加者用入口</a>
-                
-                <hr-d>
-                <div class="iine">GOOD</div>
-            </div><!-- col-lg-4 -->
-
-            <div class="col-lg-4 col-md-4 col-xs-12 desc">
-                <span class="kikaku8" href="#">
-                    <div class="b-wrapper">
-                        <h4>企画案8</h4>
-                        <p>日付</p>
-                        <p>時間</p>
-                        <p>場所</p>
-                        <p>目的</p>
-                        <p>最小〜最大人数</p>
-                    </div>
-                </span>
-                
-                <a href="#" class="btn kikakusya">企画者用入口</a>
-                <a href="#" class="btn sannkasya">参加者用入口</a>
-                <hr-d>
-                <div class="iine">GOOD</div>
-            </div><!-- col-lg-4 -->
-
-            <div class="col-lg-4 col-md-4 col-xs-12 desc">
-                <span class="kikaku9" href="#">
-                    <div class="b-wrapper">
-                        <h4>企画案9</h4>
-                        <p>日付</p>
-                        <p>時間</p>
-                        <p>場所</p>
-                        <p>目的</p>
-                        <p>最小〜最大人数</p>
-                    </div>
-                </span>
-                <a href="#" class="btn kikakusya">企画者用入口</a>
-                <a href="#" class="btn sannkasya">参加者用入口</a>
-                <hr-d>
-                <div class="iine">GOOD</div>
-            </div><!-- col-lg-4 -->
-        </div><!-- /row mt-3 -->
-    </div><!-- /container -->
+          </div>
+      <?php
+        endwhile;
+      ?>
     </div>
- 
-    
-	
+  </div>
 
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-4 col-sm-offset-4　col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 text-center">
+        <ul class="pagination">
+          <li>
+          <?php
+            if ($page > 1) {
+          ?>
+              <a href="schedule.php?page=<?php print($page - 1); ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+          <?php
+            }else{
+          ?>
+              <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+              </a>
+          <?php
+            }
+          ?>
+          </li>
+          <?php
+            for ($i=0; $i < $maxPage; $i++) {
+          ?> 
+              <li><a href="schedule.php?page=<?php echo($i + 1); ?>"><?php echo $i + 1 ?></a></li>
+          <?php
+            }
+          ?>
+          <li>
+          <?php
+            if ($page < $maxPage) {
+          ?>
+              <a href="schedule.php?page=<?php print($page + 1); ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+          <?php
+            }else{
+          ?>
+              <!-- <a href="#" aria-label="Next"> -->
+                    <span aria-hidden="true">&raquo;</span>
+              <!-- </a> -->
+          <?php
+            }
+          ?>
+          </li>
+      </ul>
+    </div>
+    </div>
+  </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
