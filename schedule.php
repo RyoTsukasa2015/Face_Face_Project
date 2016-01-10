@@ -23,7 +23,7 @@
 	$page = max($page, 1);
 
 	//最終ページを取得する
-	$sql = sprintf('SELECT COUNT(*) AS cnt FROM plans WHERE category_id=%d AND status=0', $category_id);
+	$sql = sprintf('SELECT COUNT(*) AS cnt FROM plans WHERE category_id=%d AND status<>2', $category_id);
 	$recordSet = mysqli_query($db, $sql);
 	$table = mysqli_fetch_assoc($recordSet);
 	$maxPage = ceil($table['cnt'] / $limit_qty);
@@ -130,7 +130,12 @@ $user_id = 1;
 	                </div>
 	                <div class="info">
 	                    <div class="title">
+	                    	<?php if ($plan['status']==0){ ?>
+		                    	<div class="label label-primary">Join?</div>
 		                    	<a href="chat.php?plan_id=<?php echo $plan['id']; ?>"><?php echo $plan['title']; ?></a>
+		                    <?php }else{ ?>
+	                        	<?php echo $plan['title']; ?>
+	                        <?php } ?>
 	                    </div>
 	                    <div class="desc">Date:<?php echo $plan['day']; ?></div>
 	                    <div class="desc">Time:<?php echo $plan['time']; ?></div>
@@ -192,8 +197,43 @@ $user_id = 1;
 					?>
 			    </li>
 			</ul>
+<footer class="bg-dark-gray padding-top40" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+
+	<div id="" class="container">
+		<div class="row">
+
+			<!-- メインのページ一覧 -->
+			
+
+			<!-- 会社概要など-->
+			<!-- <div class="col-sm-3 col-xs-12">
+				<ul class="list-unstyled footer-list">
+					<!- <li><a href="http://phil-portal.com/activity/" class="white">アクティビティ</a></li> -->
+					<!-- <li><a href="http://phil-portal.com/tour/" class="white">旅行</a></li>
+					<li><a href="http://phil-portal.com/gourmet/" class="white">勉強</a></li>
+					<li><a href="http://phil-portal.com/philippines-ryugaku-info/" class="white">飲み会</a></li> -->
+				<!-- 	<li><a href="http://phil-portal.com/business/" class="white">ビジネス</a></li>
+					<li><a href="http://phil-portal.com/study-english/" class="white">英語学習</a></li>
+					<li><a href="http://phil-portal.com/local/" class="white">ローカル</a></li>
+					<li><a href="http://phil-portal.com/sitemap/" class="white">サイトマップ</a></li> -->
+				<!-- </ul>
+			</div> --> 
+
+			<!-- SNS-->
+			
+
+			<!-- likebox-->
+			<div class="col-sm-3 col-xs-12 bg-white no-space">
+				<div class="fb-page fb_iframe_widget" data-href="https://www.facebook.com/pages/Phil-Portal/475643152593855" data-width="245" data-hide-cover="false" data-show-facepile="true" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/facebook"></blockquote></div></div>
+			</div>
+
 		</div>
-	  </div>
 	</div>
+
+	</br></br></br></br></br></br><p class="foot-text text-center top30 white"> 2015.Face×Fece  All Rights Reserved.</p>
+</footer>
+
+
+
   </body>
 </html>
